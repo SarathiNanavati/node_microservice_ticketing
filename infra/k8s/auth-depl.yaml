@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticketing-auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketing-auth-pod
+  template:
+    metadata:
+      labels:
+        app: ticketing-auth-pod
+    spec:
+      containers:
+        - name: ticketing-auth-cont
+          image: sarathinanavati/ticketing-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketing-auth-srv
+spec:
+  selector:
+    app: ticketing-auth-pod
+  ports:
+    - name: ticketing-auth
+      protocol: TCP
+      port: 3300
+      targetPort: 3000
