@@ -1,5 +1,9 @@
 import { json } from "body-parser";
 import express from "express";
+import "express-async-errors";
+import mongoose from "mongoose";
+import { NotFoundError } from "./errors/not-found-error";
+import { errorHandler } from "./middlewares/error-handler";
 import { currentUserRouter } from "./routes/current-user";
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
@@ -13,7 +17,23 @@ app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}!!`);
+app.all("*", async (req, res) => {
+  throw new NotFoundError();
 });
+
+app.use(errorHandler);
+
+const start = async () => {
+  try {
+    await mongoose.connect("mongodb://ticketing-auth-mongo-srv:27019/auth");
+    console.log("Connected to mongoDb!!!!");
+  } catch (err) {
+    console.error(err);
+  }
+  const port = 3000;
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}!!`);
+  });
+};
+
+start();
