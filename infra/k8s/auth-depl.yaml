@@ -16,6 +16,12 @@ spec:
         - name: ticketing-auth-cont
           image: sarathinanavati/ticketing-auth
           imagePullPolicy: Never
+          env:
+            - name: JWT_SECRET_KEY # env parameter that will be created in container environment
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret # kubectl generic key name
+                  key: jwt_key # kubectl key name
 ---
 apiVersion: v1
 kind: Service
