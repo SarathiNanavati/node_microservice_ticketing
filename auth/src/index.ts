@@ -3,7 +3,7 @@ import { app as expressApp } from "./app";
 
 const start = async () => {
   if (!process.env.JWT_SECRET_KEY) {
-    throw new Error("JWT_SECRET_KEY must be defind");
+    throw new Error("JWT_SECRET_KEY must be defined");
   }
 
   try {
