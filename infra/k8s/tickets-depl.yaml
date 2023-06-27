@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ticketing-auth-depl
+  name: ticketing-tickets-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ticketing-auth-pod
+      app: ticketing-tickets-pod
   template:
     metadata:
       labels:
-        app: ticketing-auth-pod
+        app: ticketing-tickets-pod
     spec:
       containers:
-        - name: ticketing-auth-cont
-          image: sarathinanavati/ticketing-auth
+        - name: ticketing-tickets-cont
+          image: sarathinanavati/ticketing-tickets
           imagePullPolicy: Never
           env:
             - name: MONGO_URI
-              value: mongodb://ticketing-auth-mongo-srv:27019/auth
+              value: mongodb://ticketing-tickets-mongo-srv:27019/tickets
             - name: JWT_SECRET_KEY # env parameter that will be created in container environment
               valueFrom:
                 secretKeyRef:
@@ -28,12 +28,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ticketing-auth-srv
+  name: ticketing-tickets-srv
 spec:
   selector:
-    app: ticketing-auth-pod
+    app: ticketing-tickets-pod
   ports:
-    - name: ticketing-auth
+    - name: ticketing-tickets
       protocol: TCP
       port: 3300
       targetPort: 3000

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticketing-tickets-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketing-tickets-mongo-pod
+  template:
+    metadata:
+      labels:
+        app: ticketing-tickets-mongo-pod
+    spec:
+      containers:
+        - name: ticketing-tickets-mongo-cont
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketing-tickets-mongo-srv
+spec:
+  selector:
+    app: ticketing-tickets-mongo-pod
+  ports:
+    - name: ticketing-tickets-mongo-db
+      protocol: TCP
+      port: 27019
+      targetPort: 27017
