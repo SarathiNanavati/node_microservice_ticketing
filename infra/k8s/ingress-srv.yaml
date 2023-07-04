@@ -21,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ticketing-auth-srv
+                name: ticketing-tickets-srv
                 port:
                   number: 3300
           - path: /?(.*)
