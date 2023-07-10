@@ -1,6 +1,5 @@
-import request from "supertest";
-
 import mongoose from "mongoose";
+import request from "supertest";
 import { app } from "../../app";
 
 it("returns a 404 if this ticket is not found", async () => {

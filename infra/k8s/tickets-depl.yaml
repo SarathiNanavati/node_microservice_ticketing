@@ -24,6 +24,14 @@ spec:
                 secretKeyRef:
                   name: jwt-secret # kubectl generic key name
                   key: jwt_key # kubectl key name
+            - name: NATS_URL
+              value: "http://ticketing-nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing-cluster-id
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 ---
 apiVersion: v1
 kind: Service
