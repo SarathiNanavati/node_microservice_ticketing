@@ -15,8 +15,7 @@ spec:
       containers:
         - name: ticketing-nats-cont
           image: nats-streaming:0.17.0
-          args:
-            [
+          args: [
               "-p",
               "4222",
               "-m",
@@ -28,8 +27,8 @@ spec:
               "-hbf",
               "2",
               "-SD",
-              "-cid",
-              "ticketing",
+              "-cid", # NATS cluster Id
+              "ticketing-cluster-id",
             ]
 ---
 apiVersion: v1
