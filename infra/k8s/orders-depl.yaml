@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticketing-orders-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketing-orders-pod
+  template:
+    metadata:
+      labels:
+        app: ticketing-orders-pod
+    spec:
+      containers:
+        - name: ticketing-orders-cont
+          image: sarathinanavati/ticketing-orders
+          imagePullPolicy: Never
+          env:
+            - name: MONGO_URI
+              value: mongodb://ticketing-orders-mongo-srv:27019/orders
+            - name: JWT_SECRET_KEY # env parameter that will be created in container environment
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret # kubectl generic key name
+                  key: jwt_key # kubectl key name
+            - name: NATS_URL
+              value: "http://ticketing-nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing-cluster-id
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketing-orders-srv
+spec:
+  selector:
+    app: ticketing-orders-pod
+  ports:
+    - name: ticketing-orders
+      protocol: TCP
+      port: 3300
+      targetPort: 3000
